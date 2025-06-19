@@ -1,4 +1,5 @@
 module type Day = sig
-  val solution_pt1 : unit -> string
-  val solution_pt2 : unit -> string
+  val day : int
+  val solution_pt1 : string list -> string
+  val solution_pt2 : string list -> string
 end
