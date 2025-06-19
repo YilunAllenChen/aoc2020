@@ -1,1 +1,1 @@
-fd . | entr -c -s "dune build && dune exec aoc"
+dune exec --watch aoc 2> /dev/null
