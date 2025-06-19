@@ -3,5 +3,5 @@
  (preprocess
   (pps ppx_sexp_conv))
  (name aoc)
- (modules aoc day io d0 d1 d2)
+ (modules aoc day io d0 d1 d2 d3)
  )
