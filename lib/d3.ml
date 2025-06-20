@@ -32,8 +32,6 @@ let solution_pt1 (data : string list) : string =
   let xmax = List.hd_exn data |> String.length in
   let all_tree_locs = gather_tree_locations data in
   let trees_on_slope = all_tree_locs |> List.filter ~f:(is_on_slope xmax 1 3) in
-
-  (* trees_on_slope |> [%sexp_of: location list] |> Sexp.to_string_hum *)
   trees_on_slope |> List.length |> Int.to_string
 
 let solution_pt2 (data : string list) : string =
