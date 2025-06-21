@@ -69,8 +69,8 @@ let find_all_outer_colors (lookup : StringSet.t StringMap.t) : string list =
 
 let solution_pt1 (data : string list) : string =
   let rules = List.map ~f:parse_line data in
-  let _ = List.map rules ~f:(Dbg.debug [%sexp_of: rule]) in
+  (* let _ = List.map rules ~f:(Dbg.debug [%sexp_of: rule]) in *)
   let lookup = rev_rules rules in
-  find_all_outer_colors lookup |> String.concat ~sep:", "
+  find_all_outer_colors lookup |> List.length |> Int.to_string
 
 let solution_pt2 _ = ""
