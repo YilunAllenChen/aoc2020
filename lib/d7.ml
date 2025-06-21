@@ -69,8 +69,32 @@ let find_all_outer_colors (lookup : StringSet.t StringMap.t) : string list =
 
 let solution_pt1 (data : string list) : string =
   let rules = List.map ~f:parse_line data in
-  (* let _ = List.map rules ~f:(Dbg.debug [%sexp_of: rule]) in *)
   let lookup = rev_rules rules in
   find_all_outer_colors lookup |> List.length |> Int.to_string
 
-let solution_pt2 _ = ""
+let rules_to_lookup (rules : rule list) : int StringMap.t StringMap.t =
+  List.fold rules ~init:StringMap.empty
+    ~f:(fun (acc : int StringMap.t StringMap.t) (r : rule) ->
+      Map.update acc r.color ~f:(function
+        | Some _ -> failwith "the fuck"
+        | None -> r.can_contain))
+
+let rec capacity_of (curr : string) (lookup : int StringMap.t StringMap.t) : int
+    =
+  let maybe_inner = Map.find_exn lookup curr in
+  if Map.is_empty maybe_inner then 1
+  else
+    let kv_lst = Map.to_alist maybe_inner in
+    List.fold kv_lst ~init:1 ~f:(fun (acc : int) ((key, v) : string * int) ->
+        let sub_capacity = v * capacity_of key lookup in
+        (* print_endline *)
+        (*   (curr ^ " has capacity contributed from : " ^ key ^ " : " *)
+        (*  ^ Int.to_string sub_capacity); *)
+        acc + sub_capacity)
+
+let solution_pt2 (data : string list) : string =
+  let rules = List.map ~f:parse_line data in
+  let lookup = rules_to_lookup rules in
+  (* let my_bag = Map.find_exn lookup "shiny gold" in *)
+  (* let _ = Map.to_alist my_bag |> Dbg.debug [%sexp_of: (string * int) list] in *)
+  capacity_of "shiny gold" lookup - 1 |> Int.to_string
