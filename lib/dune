@@ -1,7 +1,7 @@
 (library
- (libraries base stdio core str)
+ (libraries base stdio core str re)
  (preprocess
   (pps ppx_sexp_conv))
  (name aoc)
- (modules aoc day io dbg d0 d1 d2 d3 d4 d5 d6)
+ (modules aoc day io dbg d0 d1 d2 d3 d4 d5 d6 d7)
  )
