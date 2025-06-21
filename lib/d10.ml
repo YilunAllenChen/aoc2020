@@ -14,7 +14,7 @@ let rec window2 : 'a list -> ('a * 'a) list = function
   | _ -> []
 
 let solution_pt1 (data : string list) : string =
-  let pairs = sort_bag data |> Dbg.debug [%sexp_of: int list] |> window2 in
+  let pairs = sort_bag data |> window2 in
   let diffs = List.map pairs ~f:(fun (left, right) -> right - left) in
   let groups = List.sort_and_group diffs ~compare in
   let diff_and_count =
@@ -28,6 +28,26 @@ let solution_pt1 (data : string list) : string =
   in
   pdt |> Int.to_string
 
+let rec ways_starting_from (memo : int Int.Table.t) (sublst : int list) : int =
+  match sublst with
+  | [] | [ _ ] -> failwith "shouldn't happen"
+  | [ _; _ ] -> 1
+  | hd :: tl ->
+      let candidates : int list =
+        List.take_while tl ~f:(fun num -> num - hd <= 3)
+      in
+      let count_ways_from_candidate (acc : int) (candidate : int) : int =
+        let not_candidate = fun rest -> not (phys_equal rest candidate) in
+        let eval_from_candidate : unit -> int =
+         fun () -> ways_starting_from memo (List.drop_while tl ~f:not_candidate)
+        in
+        let from_candidate =
+          Hashtbl.find_or_add memo candidate ~default:eval_from_candidate
+        in
+        acc + from_candidate
+      in
+      List.fold candidates ~init:0 ~f:count_ways_from_candidate
+
 let solution_pt2 (data : string list) : string =
-  let _ = data in
-  ""
+  let bag = sort_bag data in
+  ways_starting_from (Int.Table.create ()) bag |> Int.to_string
