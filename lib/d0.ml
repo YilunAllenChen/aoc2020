@@ -2,8 +2,8 @@ let day = 0
 
 open Core
 
-let solution_pt1 (data : string list) : string =
+let solution_pt1 (data : string list) : string = String.concat ~sep:"\n" data
+
+let solution_pt2 (data : string list) : string =
   let _ = data in
   ""
-
-let solution_pt2 (data : string list) : string = String.concat ~sep:"\n" data
